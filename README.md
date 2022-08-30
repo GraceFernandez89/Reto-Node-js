@@ -72,3 +72,100 @@ Vamos a comenzar con las instalaciones necesarias para configurar nuestro proyec
   ```sh
   npm i  mongoose cors morgan body-parser bcryptjs jsonwebtoken
   ```
+
+- dotenv
+  Básicamente este paquete nos permite crear un archivo . env en nuestro proyecto que cargará en process. env como nuestras variables de entorno.
+  ```sh
+  npm i dotenv
+  ```
+
+## Estructuración del proyecto
+
+Al hablar de buenas practicas con Node js, una buena estructuracion del proyecto es fundamental a la hora del desarrollo, de ahi que se debe empezar por saber como empezar a crearlo de la manera adecuada.
+Primero nuestro archivo principal index.js o app.js debe tener adecuada estructura, como lo podemos ver a continuacion
+
+```sh
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const config = require('./config')
+const db = require('./config')
+const morgan = require('morgan');
+const cors = require('cors');
+const bodyParser= require('body-parser');
+
+const connectDb = require('./db/mongodb')
+const errorHandlers = require('./middlewares/error-handler');
+const indexRouter = require('./routes/index');
+
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+app.use(cors({origen:'*'}));
+app.use(errorHandlers.errorHandler);
+app.use('/',indexRouter);
+connectDb(db)
+app.listen(config.app.port,()=>console.log(`listen on ${config.app.port}`));
+module.exports = app;
+
+```
+
+Vamos a requerir dotenv, Express y todos lo middleware que instalamos asi que los importamos y los usamos. Tambien necesitaremos del archivo de configuracion de conexion a nuestra base de datos algunos middlewares que nosotros podemos crear y no puede faltar las rutas.
+
+Como podemos observar mediante module.exports = app, puedo separar el archivo y tenemos la facultad de importarlo de manera sencilla.
+
+## .env
+
+Debemos crear un archivo .env en donde estaran todas nuetras variables de entorno como son las siguientes:
+
+```sh
+PORT=3000
+DB_NAME=softka
+DB_PORT=27017
+DB_HOST=localhost
+```
+
+En este ejemplo solo tenemos el ambiente de desarrollo pero estas variables pueden variar segun el ambiente en donde se este.
+
+## config.js
+
+Tenemos el archivo de configuracion en donde se pueden crear diferentes jerarquias de configuracion podemos dividir las variables de entorno que vamos utilizar en la aplicacion y base de datos:
+
+```sh
+const config = {
+  app:{
+      port: process.env.PORT
+  },
+  db: {
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+      dbName: process.env.DB_NAME
+  }
+}
+
+module.exports = config
+```
+
+## Carpeta apiServices
+
+Tenemos nuestras apiService o componentes y dentro de cada componente tenemos los controladores, los modelos y rutas perteneciente a ese componente, esto tiene varias ventajas, lo primero es que si se necesita separar un componente y se lo quiere trasladar a un microservicio por aparte es mucho mas sencillo ya que toda la logica se encuestra en cada componente y da la faultad de que nuestro proyecto este ordenado.
+
+## Carpeta tests
+
+En donde se pueden crear todos los test para probar nuestro proyecto.
+
+## Carpeta microservicios
+
+Cuando se esta creando una API monolitica es mejor no dejar todas las cosas dentro del nucleo del proyecto por que es una mala practica, entonces se crea aplicaciones que son microservicios que realizan cosas muy especificas y pueden ser escalables sin ninguna complicacion. Un ejemplo de microservicio es el de enviar emails, lo podemos crear como microservicio en nuestro proyecto.
+
+## Carpeta middleware
+
+En esta carpeta se separa todos los middleware que nosotros desarrollemos y necesitemos.
+
+## Carpeta routes
+
+Como se recomendo todas las rutas deben estar en cada componente pero al final, se debe traer todas las rutas de los componentes y se los coloca en un router general, donde se pueda modificar facilmente cualquier ruta.
+
+## Carpeta scripts
+
+Donde se guardaran los scripts necesarios en mi aplicacion y son utilizados de manera continua.
