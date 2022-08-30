@@ -169,3 +169,35 @@ Como se recomendo todas las rutas deben estar en cada componente pero al final, 
 ## Carpeta scripts
 
 Donde se guardaran los scripts necesarios en mi aplicacion y son utilizados de manera continua.
+
+## Arquitectura de software en capas Capas y subcapas comunes
+
+## Capa de presentación
+
+- Web App.
+- Traditional web page
+- WebApp, React, Vue or Angular
+- phoneApp
+-
+
+## Capa de aplicación
+
+- Web Framework (Express)
+- Controllers
+- Validation Layer
+- Authentication Layer
+- Authorization Layer
+- Routing Layer
+
+## Capa negocio
+
+- Services
+- models
+- Domain
+- Data Access Layer
+
+## DAO
+
+- logging
+- networking
+- Other services
