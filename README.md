@@ -8,3 +8,19 @@ Node.js es uno de los frameworks de Javascript más utilizados en la actualidad,
 
 - Se descarga Node js de su pagina principal https://nodejs.org/en/download/ y se descarga la version recomendada LTS.
 - Se trabaja con Visul Studio Code el cual tambien se lo podra descargar de la pagina principal https://code.visualstudio.com/
+
+## Creacion de proyecto
+
+Con Visual Studio Code escogemos la carpeta donde empezaremos a crear nuestro backend y se abre una terminal.
+Necesitaremos iniciar con la instalacion de las siguientes dependencias en el proyecto:
+
+- Activamos la inicialización del proyecto.
+
+  ```sh
+  npm init
+  ```
+
+- Como vamos a trabajar con express se debe instalar, ademas se deben instalar unas dependencias importantes se podria instalar una a una o en una sola linea de la siguiente manera:
+  ```sh
+  npm i express nodemon mongoose cors morgan body-parser bcryptjs jsonwebtoken
+  ```
